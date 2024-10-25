@@ -1,0 +1,35 @@
+CREATE DATABASE user_system;
+
+USE user_system;
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE todo_lists (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE todos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    list_id INT NOT NULL,
+    task VARCHAR(255) NOT NULL,
+    status TINYINT(1) DEFAULT 0,
+    FOREIGN KEY (list_id) REFERENCES todo_lists(id) ON DELETE CASCADE
+);
+
+ALTER TABLE todo_lists
+ADD status VARCHAR(100) NOT NULL; 
+
+ALTER TABLE users
+ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE todo_lists ADD COLUMN is_completed BOOLEAN DEFAULT FALSE;
+
+ALTER TABLE todo_lists ADD COLUMN description TEXT;
